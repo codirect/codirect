@@ -1,0 +1,87 @@
+.item-navigator {
+  --navigator-viewport-width: 120px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 2px;
+  background-color: #353535;
+  border-radius: 100px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.item-navigator .item-viewport {
+  overflow: hidden;
+  width: var(--navigator-viewport-width);
+}
+
+.item-navigator .item-track {
+  display: flex;
+  width: 100%;
+  transition: transform 250ms ease;
+  will-change: transform;
+}
+
+.item-navigator .item {
+  flex: 0 0 100%;
+  margin: 0;
+  width: 100%;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-navigator .item.is-clickable {
+  cursor: pointer;
+}
+
+.item-navigator .item-skeleton {
+  width: var(--navigator-viewport-width);
+  height: 20px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4a4a4a 0%, #5b5b5b 50%, #4a4a4a 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.item-navigator .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 15px;
+  background-color: #4A4A4A;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.item-navigator .button:not(:disabled):hover {
+  background-color: #525252;
+}
+
+.item-navigator .button:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+.item-navigator .button:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

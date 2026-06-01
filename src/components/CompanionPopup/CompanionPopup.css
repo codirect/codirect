@@ -1,0 +1,77 @@
+.companion-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: companion-fade 0.2s ease-out;
+}
+
+@keyframes companion-fade {
+  from {
+    backdrop-filter: blur(0px);
+  }
+  to {
+    backdrop-filter: blur(3px);
+  }
+}
+
+.companion-panel {
+  width: 520px;
+  max-width: calc(100% - 48px);
+  animation: companion-open 0.15s ease-out;
+  transition: all 0.2s ease;
+}
+
+@keyframes companion-open {
+  from {
+    scale: 0.9;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+.companion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.companion-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.companion-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 10px 12px;
+  background: #1f1f1f;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+}
+
+.companion-label {
+  font-size: 16px;
+  color: #ffffff9a;
+}
+
+.companion-value {
+  font-size: 16px;
+  color: #ffffffdc;
+}
+
+.companion-footer {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+}

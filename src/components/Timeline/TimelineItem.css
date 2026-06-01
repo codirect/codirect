@@ -1,0 +1,79 @@
+.timeline-item {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 0px;
+  pointer-events: auto;
+  will-change: transform, left, width;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  user-select: none;
+  cursor: grab;
+  z-index: 2;
+  transition: background-color 0.2s, opacity 0.2s;
+  border-left: 1px solid #272727;
+}
+
+.timeline-item.selected {
+  background: repeating-linear-gradient(135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1) 10px,
+      transparent 10px,
+      transparent 20px);
+}
+
+.timeline-item:active {
+  cursor: grabbing;
+}
+
+.timeline-item.dragging {
+  z-index: 100;
+  opacity: 0.85;
+}
+
+.timeline-item-name,
+.timeline-item-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.timeline-item-name {
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.timeline-item-description {
+  font-size: 0.85rem;
+  font-weight: 300;
+  flex: 1;
+  height: 65%;
+  color: #ccc;
+}
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  background-color: transparent;
+  transition: background-color 0.15s;
+  z-index: 10;
+}
+
+.resize-handle:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.handle-left {
+  left: 0;
+}
+
+.handle-right {
+  right: 0;
+}

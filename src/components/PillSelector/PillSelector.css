@@ -1,0 +1,36 @@
+.pill-selector {
+  position: relative;
+  display: inline-flex;
+  padding: 2px;
+  background-color: #353535;
+  border-radius: 100px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.pill-selector .pill-option {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  padding: 5px 15px;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 100px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.pill-selector .pill-highlight {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  background-color: #444444;
+  border-radius: 100px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  transition: left 220ms ease, width 220ms ease; 
+}

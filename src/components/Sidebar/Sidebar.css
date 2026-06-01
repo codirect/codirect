@@ -1,0 +1,18 @@
+.sidebar {
+  width: 428px;
+  max-width: 428px;
+  height: calc(100vh - 45px);
+  background-color: #252525;
+  border-right: 1px solid #333333;
+  transition: transform 200ms ease, max-width 200ms ease, opacity 200ms ease;
+  transform: translateX(0);
+  opacity: 1;
+  overflow: hidden;
+}
+
+.sidebar.is-hidden {
+  transform: translateX(-100%);
+  max-width: 0;
+  opacity: 0;
+  pointer-events: none;
+}

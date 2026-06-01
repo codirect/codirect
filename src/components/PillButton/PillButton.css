@@ -1,0 +1,31 @@
+.pill-button-bg {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 2px;
+  background-color: #353535;
+  border-radius: 100px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.pill-button-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 15px;
+  background-color: #4A4A4A;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.pill-button-button:hover {
+  background-color: #525252;
+}
+
+.pill-button-button:active {
+  transform: scale(0.95);
+}

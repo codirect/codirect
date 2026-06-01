@@ -1,0 +1,41 @@
+.status-pill {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  padding: 6px 12px;
+  background-color: #353535;
+  border-radius: 100px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  align-items: center;
+  gap: 12px;
+}
+.status-pill .clickable {
+  cursor: pointer;
+}
+
+.status-pill p {
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.status-pill .status-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #ffa600;
+  box-shadow: 0 0 12px rgba(255, 166, 0, 0.9);
+}
+.status-pill .status-indicator.ok {
+  background-color: #51D584;
+  box-shadow: 0 0 12px rgba(81, 213, 132, 0.9);
+}
+.status-pill .status-indicator.checking {
+  background-color: #ffa600;
+  box-shadow: 0 0 12px rgba(255, 166, 0, 0.9);
+}
+.status-pill .status-indicator.error {
+  background-color: #ff0000;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.9);
+}

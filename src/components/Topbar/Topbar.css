@@ -1,0 +1,44 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.5rem;
+  height: 45px;
+  border-bottom: 1px solid #333333;
+  background-color: #272727;
+}
+
+.topbar .section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar .logo {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+.topbar .logo .co {
+  font-weight: 500;
+  color: #C71212;
+}
+
+.topbar .project-name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #ffffff62;
+}
+
+.topbar .vertical-line {
+  width: 1px;
+  height: 20px;
+  background-color: #ffffff62;  
+}
+
+.topbar .combine_sequence_selector {
+  background-color: #353535;
+  border-radius: 100px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,34 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300;400;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Sofia Sans", sans-serif;
+  user-select: none;
+}
+
+p {
+  cursor: default;
+}
+
+header {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Sofia Sans", sans-serif;
+  background-color: #222222;
+  color: #fff;
+}
+
+.panel {
+  background-color: #272727;
+  border-radius: 12px;
+  box-shadow: 0 0px 6px #333333;
+  border: 1px solid #333333;
+}
