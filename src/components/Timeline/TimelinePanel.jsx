@@ -102,18 +102,6 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
     return Math.round(value / snapInterval) * snapInterval
   }
 
-  const handleRulerClick = (e) => {
-    if (e.target.closest('.timeline-item')) return;
-
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    const clickX = e.clientX - rect.left + container.scrollLeft;
-
-    const newTime = Math.max(0, clickX / secondsScale);
-    setScrubberTime(newTime);
-  };
   useEffect(() => {
     if (scrubberRef.current) {
       scrubberRef.current.style.transform = `translateX(${scrubberTime * secondsScale}px)`;
@@ -333,7 +321,6 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
           snapInterval={snapInterval}
           onSnapEnabledChange={setSnapEnabled}
           onSnapIntervalChange={setSnapInterval}
-          onClick={handleRulerClick}
         />
         {TRACKS.map((track, index) => (
           <div
