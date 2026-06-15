@@ -29,3 +29,10 @@
 .pill-button-button:active {
   transform: scale(0.95);
 }
+
+.pill-button-button:disabled {
+  background-color: #2c2c2c;
+  color: #777777;
+  cursor: default;
+  box-shadow: none;
+}

@@ -13,8 +13,7 @@
   user-select: none;
   cursor: grab;
   z-index: 2;
-  transition: background-color 0.2s, opacity 0.2s;
-  border-left: 1px solid #272727;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
 .timeline-item.selected {
@@ -23,6 +22,11 @@
       rgba(255, 255, 255, 0.1) 10px,
       transparent 10px,
       transparent 20px);
+}
+
+.timeline-item.no-edit {
+  pointer-events: none;
+  cursor: default;
 }
 
 .timeline-item:active {
@@ -64,6 +68,11 @@
   background-color: transparent;
   transition: background-color 0.15s;
   z-index: 10;
+}
+
+.resize-handle.no-edit {
+  pointer-events: none;
+  cursor: default;
 }
 
 .resize-handle:hover {

@@ -4,6 +4,7 @@ import HorizontalSeparator from '../components/HorizontalSeparator'
 import InputField from '../components/InputField/InputField'
 import Button from '../components/Button/Button'
 import { useNavigate } from 'react-router-dom'
+import TOS from '../components/TOS/TOS'
 
 function NewProject() {
   const [projectName, setProjectName] = React.useState('')
@@ -48,14 +49,20 @@ function NewProject() {
     const newProject = {
       date: Date.now(),
       name: projectName,
+      websocketRoomId: crypto.randomUUID(),
       companion: {
         connection: `${companionIP}:${companionPort}`,
+        fetchMode: 0, //auto by default
       },
       sequences: [
         {
           name: 'Sequence 1',
           items: [],
         },
+      ],
+      tracks: [
+        { name: 'Camera' }, { name: 'Graphics' }, { name: 'Lighting' },
+        { name: 'Video' }, { name: 'Audio' }, { name: 'Other' },
       ],
     }
 
@@ -100,6 +107,8 @@ function NewProject() {
           </Button>
         </div>
       </div>
+      
+      <TOS />
     </div>
   )
 }

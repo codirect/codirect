@@ -1,0 +1,53 @@
+.play-controls {
+  position: absolute;
+  flex: 1;
+  height: 23%;
+  left: 60%;
+  transform: translate(-50%, 50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  transition: left 0.2s ease;
+}
+
+.play-controls.no-sidebar {
+  left: 50%;
+}
+
+.play-controls .time {
+  font-size: 56px;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.play-controls .button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: #333333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.play-controls .button:disabled {
+  cursor: default;
+}
+
+.play-controls .hold-button {
+  width: 126px;
+  height: 39px;
+  border-radius: 50px;
+  background-color: #333333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.play-controls .hold-button.active {
+  background-color: #7c1313;
+}

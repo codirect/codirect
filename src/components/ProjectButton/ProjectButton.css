@@ -16,13 +16,29 @@
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-  transition: background-color 150ms ease;
+  transition: all 150ms ease;
   font-size: 19px;
   text-align: left;
+  opacity: 0;
+  animation: animate-in 0.2s forwards;
+  animation-delay: var(--delay);
+}
+@keyframes animate-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .project-button-main:hover {
   background-color: #404040;
+}
+.project-button-main:active {
+  scale: 0.98;
 }
 
 .project-button-name {

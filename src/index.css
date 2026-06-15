@@ -24,6 +24,7 @@ body {
   font-family: "Sofia Sans", sans-serif;
   background-color: #222222;
   color: #fff;
+  overflow-x: hidden;
 }
 
 .panel {

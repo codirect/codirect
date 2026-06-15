@@ -1,10 +1,11 @@
 import React from 'react'
 import Button from '../components/Button/Button';
 import HorizontalSeparator from '../components/HorizontalSeparator';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ProjectButton from '../components/ProjectButton/ProjectButton';
 import { readProjects, writeProjects } from '../utils/projectUpdater';
-import {FaDiscord, FaGithub, FaInstagram} from 'react-icons/fa'
+import { FaDiscord, FaGithub, FaInstagram } from 'react-icons/fa'
+import TOS from '../components/TOS/TOS';
 
 function Projects() {
   const [projects, setProjects] = React.useState([]);
@@ -64,7 +65,14 @@ function Projects() {
           <p style={{ fontSize: '32px', marginBottom: '20px' }}>Recent Projects</p>
           {projects.length === 0 && <p style={{ fontSize: '18px', color: '#666' }}>No projects found.</p>}
           {projects.map((project, index) => (
-            <div key={index} style={{ marginBottom: '10px' }}>
+            <div
+              key={index}
+              style={{
+                marginBottom: '10px',
+                '--delay': `${index * 75}ms`
+              }}
+              className="staggered-item"
+            >
               <ProjectButton
                 name={project.name}
                 onClick={() => handleProjectClick(project)}
@@ -76,7 +84,7 @@ function Projects() {
 
           <div style={{ flex: 1 }}></div>
           <HorizontalSeparator style={{ marginLeft: '-25px', marginRight: '-25px', width: 'calc(100% + 50px)' }} />
-          
+
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -92,14 +100,14 @@ function Projects() {
                 fontSize: '15px',
                 fontWeight: '500',
                 color: '#c9c9c9',
-                textDecoration: 'underline', 
+                textDecoration: 'underline',
                 cursor: 'pointer',
               }}
               onClick={() => {
-                
+
               }}
             >
-              Enable cloud sync
+              Make a donation
             </button>
 
             <div style={{ display: 'flex', gap: '12px', color: '#cfcfcf' }}>
@@ -130,6 +138,8 @@ function Projects() {
           </Button>
         </div>
       </div>
+
+      <TOS />
     </div>
   )
 }

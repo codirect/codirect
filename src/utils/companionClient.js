@@ -10,49 +10,62 @@ export async function fetchCompanionConfig(connection) {
   const companionPort = parts[1]
   const baseUrl = `http://${companionIp}:${companionPort}`
 
+  // Step 1: health check — if this fails for any reason, IP is bad
+  let healthRes
   try {
-    const healthRes = await fetch(`${baseUrl}/api/connections`)
-    if (!healthRes.ok) {
-      return { status: 'Offline', config: null }
-    }
+    healthRes = await fetch(`${baseUrl}/api/connections`)
+  } catch {
+    return { status: 'Offline', config: null }
+  }
+  if (!healthRes.ok) {
+    return { status: 'Offline', config: null }
+  }
 
-    const configRes = await fetch(`${baseUrl}/int/export/custom?connections=false&buttons=true&surfaces.known=false&surfaces.instances=false&surfaces.remote=false&triggers=false&customVariables=false&expressionVariables=false&includeSecrets=false&format=json`)
-    if (!configRes.ok) {
-      return { status: 'Failed to connect', config: null }
-    }
-
-    const config = await configRes.json()
-    return { status: 'OK', config }
-  } catch (error) {
+  // Step 2: config fetch — server is reachable, but config may be wrong
+  let configRes
+  try {
+    configRes = await fetch(`${baseUrl}/int/export/custom?connections=false&buttons=true&surfaces.known=false&surfaces.instances=false&surfaces.remote=false&triggers=false&customVariables=false&expressionVariables=false&includeSecrets=false&format=json`)
+  } catch {
     return { status: 'Failed to connect', config: null }
   }
+  if (!configRes.ok) {
+    return { status: 'Failed to connect', config: null }
+  }
+
+  const config = await configRes.json()
+  return { status: 'OK', config }
 }
 
 export async function refreshCompanionForProject(project) {
-  if (!project || !project.name) return null
-  if (!project.companion || !project.companion.connection) return null
+  if (!project?.name || !project?.companion?.connection) return null;
 
-  const checkingUpdate = updateProject(project.name, (current) => ({
+  const fetchMode = project.companion.fetchMode;
+
+  if (fetchMode === 0) {
+    try {
+      const result = await fetchCompanionConfig(project.companion.connection);
+
+      return updateProject(project.name, (current) => ({
+        ...current,
+        companion: {
+          ...current.companion,
+          companionStatus: result.status,
+          companionConfig: result.config,
+          lastCheckedAt: Date.now(),
+        },
+      }));
+    } catch (err) {
+      console.error("Companion fetch failed:", err);
+      return null;
+    }
+  }
+
+  return updateProject(project.name, (current) => ({
     ...current,
     companion: {
-      ...(current.companion ? current.companion : {}),
-      companionStatus: 'Checking...',
-      companionConfig: null,
-    },
-  }))
-
-  const result = await fetchCompanionConfig(project.companion.connection)
-  const updated = updateProject(project.name, (current) => ({
-    ...current,
-    companion: {
-      ...(current.companion ? current.companion : {}),
-      companionStatus: result.status,
-      companionConfig: result.config,
+      ...current.companion,
+      companionStatus: 'OK',
       lastCheckedAt: Date.now(),
     },
-  }))
-
-  if (updated) return updated
-  if (checkingUpdate) return checkingUpdate
-  return null
+  }));
 }
