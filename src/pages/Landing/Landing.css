@@ -172,6 +172,11 @@
 .landing .card .icon-container.secondary {
   background-color: #2B2B2B;
   color: #7B7B7B;
+  transition: color 0.15s ease;
+  cursor: pointer;
+}
+.landing .card .icon-container.secondary:hover {
+  color: #ececec;
 }
 
 .landing footer {

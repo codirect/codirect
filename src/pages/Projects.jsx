@@ -111,7 +111,7 @@ function Projects() {
             </button>
 
             <div style={{ display: 'flex', gap: '12px', color: '#cfcfcf' }}>
-              <FaGithub size={18} style={{ cursor: 'pointer' }} />
+              <FaGithub size={18} style={{ cursor: 'pointer' }} onClick={() => window.open('https://github.com/k-preslav/codirect', '_blank', 'noopener,noreferrer')} />
               <FaDiscord size={18} style={{ cursor: 'pointer' }} />
               <FaInstagram size={18} style={{ cursor: 'pointer' }} />
             </div>

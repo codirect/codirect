@@ -3,6 +3,8 @@ import "./Landing.css"
 import { ArrowRightFromLineIcon, ArrowRightIcon, CheckCheckIcon, ExternalLinkIcon, MailIcon } from 'lucide-react'
 import { FaDiscord, FaGithub } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom'
+import { TbArrowsDiagonal } from 'react-icons/tb'
+import { GoArrowUpRight } from 'react-icons/go'
 
 function Landing() {
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -52,6 +54,7 @@ function Landing() {
           <button className='nav-button' onClick={() => { scrollToSection('home'); setMenuOpen(false) }}>Home</button>
           <button className='nav-button' onClick={() => { scrollToSection('features'); setMenuOpen(false) }}>Features</button>
           <button className='nav-button' onClick={() => { scrollToSection('contact'); setMenuOpen(false) }}>Contact</button>
+          <button className='nav-button' onClick={() => { scrollToSection('contact'); setMenuOpen(false) }}>Docs <GoArrowUpRight /></button>
         </div>
       </div>
 
@@ -68,7 +71,7 @@ function Landing() {
           <a className='secondary-button' onClick={() => scrollToSection('features')}>Learn more</a>
         </div>
 
-        <img className='showcase-image' src='./public/codirectShowcaseImage.png' />
+        <img className='showcase-image' src='/codirectShowcaseImage.png' />
 
         <div style={{ marginTop: '4.5rem' }} className='divider' />
 
@@ -85,7 +88,7 @@ function Landing() {
           <div className='card'>
             <p className='title'>Open-Source</p>
             <div className='icons'>
-              <div className='icon-container secondary'>
+              <div className='icon-container secondary' onClick={() => window.open('https://github.com/k-preslav/codirect', '_blank', 'noopener,noreferrer')}>
                 <FaGithub size={22} />
               </div>
               <div className='icon-container'>
