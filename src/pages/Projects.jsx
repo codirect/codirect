@@ -143,7 +143,7 @@ function Projects() {
           </div>
 
           <p style={{ fontSize: '14px', color: '#555', marginTop: 'auto' }}>
-            beta 1.0.0
+            beta 1.1.2
           </p>
         </div>
       </div>
