@@ -55,13 +55,14 @@ function Projects() {
         padding: '0',
         overflow: 'hidden',
         width: '38vw',
+        minWidth: '650px',
         minHeight: '60vh'
       }}>
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           padding: '25px',
-          width: '70%'
+          flex: '1 1 60%'
         }}>
           <p style={{ fontSize: '32px', marginBottom: '20px' }}>Recent Projects</p>
           {projects.length === 0 && <p style={{ fontSize: '18px', color: '#666' }}>No projects found.</p>}
@@ -122,12 +123,12 @@ function Projects() {
         <div style={{ width: '1px', backgroundColor: '#333333', height: 'auto' }}></div>
 
         <div style={{
-          width: '50%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '12px 0'
+          padding: '25px 0',
+          flex: '1 1 40%'
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 'auto' }}>
             <p style={{ fontSize: '36px', fontWeight: '600' }}>
@@ -140,7 +141,7 @@ function Projects() {
               Create new project
             </Button>
           </div>
-          
+
           <p style={{ fontSize: '14px', color: '#555', marginTop: 'auto' }}>
             beta 1.0.0
           </p>
