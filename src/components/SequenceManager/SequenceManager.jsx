@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { DndContext, PointerSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Pencil, Trash2 } from 'lucide-react'
+import { CircleQuestionMarkIcon, Pencil, Trash2 } from 'lucide-react'
 import HorizontalSeparator from '../HorizontalSeparator'
 import Button from '../Button/Button'
 import './SequenceManager.css'
@@ -100,8 +100,15 @@ export default function SequenceManager({ sequences = [], onClose, onReorder, on
       <div className='panel seqmgr-panel'>
         <div className='seqmgr-header'>
           <p style={{ fontSize: '1.5rem', margin: 0 }}>Manage Sequences</p>
+          <a
+            href="https://docs.codirect.live/sequences/"
+            target="_blank"
+            className="docs-helper"
+          >
+            <CircleQuestionMarkIcon size={28} />
+          </a>
         </div>
-        
+
         <HorizontalSeparator />
 
         <div className='seqmgr-list'>

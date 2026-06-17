@@ -26,7 +26,9 @@
 
 .page-panel .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, 125px);
+  grid-auto-rows: max-content;
+  align-content: start;
   gap: 12px;
   padding: 8px 12px 16px;
   overflow-y: auto;

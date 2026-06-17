@@ -1,10 +1,12 @@
 import React from 'react'
 import Button from '../components/Button/Button';
 import HorizontalSeparator from '../components/HorizontalSeparator';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ProjectButton from '../components/ProjectButton/ProjectButton';
 import { readProjects, writeProjects } from '../utils/projectUpdater';
-import {FaDiscord, FaGithub, FaInstagram} from 'react-icons/fa'
+import { FaDiscord, FaGithub, FaInstagram } from 'react-icons/fa'
+import TOSFooter from '../components/TOSFooter/TOSFooter';
+import { BookMarkedIcon } from 'lucide-react';
 
 function Projects() {
   const [projects, setProjects] = React.useState([]);
@@ -64,7 +66,14 @@ function Projects() {
           <p style={{ fontSize: '32px', marginBottom: '20px' }}>Recent Projects</p>
           {projects.length === 0 && <p style={{ fontSize: '18px', color: '#666' }}>No projects found.</p>}
           {projects.map((project, index) => (
-            <div key={index} style={{ marginBottom: '10px' }}>
+            <div
+              key={index}
+              style={{
+                marginBottom: '10px',
+                '--delay': `${index * 75}ms`
+              }}
+              className="staggered-item"
+            >
               <ProjectButton
                 name={project.name}
                 onClick={() => handleProjectClick(project)}
@@ -76,7 +85,7 @@ function Projects() {
 
           <div style={{ flex: 1 }}></div>
           <HorizontalSeparator style={{ marginLeft: '-25px', marginRight: '-25px', width: 'calc(100% + 50px)' }} />
-          
+
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -92,20 +101,20 @@ function Projects() {
                 fontSize: '15px',
                 fontWeight: '500',
                 color: '#c9c9c9',
-                textDecoration: 'underline', 
+                textDecoration: 'underline',
                 cursor: 'pointer',
               }}
               onClick={() => {
-                
+                window.open('https://ko-fi.com/codirect/?hidefeed=true&widget=true', '_blank')
               }}
             >
-              Enable cloud sync
+              Make a donation
             </button>
 
             <div style={{ display: 'flex', gap: '12px', color: '#cfcfcf' }}>
-              <FaGithub size={18} style={{ cursor: 'pointer' }} />
-              <FaDiscord size={18} style={{ cursor: 'pointer' }} />
-              <FaInstagram size={18} style={{ cursor: 'pointer' }} />
+              <FaGithub size={18} style={{ cursor: 'pointer' }} onClick={() => window.open('https://github.com/codirect/codirect', '_blank', 'noopener,noreferrer')} />
+              <FaDiscord size={18} style={{ cursor: 'pointer' }} onClick={() => window.open('https://discord.gg/TVh2bbYx', '_blank', 'noopener,noreferrer')} />
+              <BookMarkedIcon size={18} style={{ cursor: 'pointer' }} onClick={() => window.open('https://docs.codirect.live', '_blank', 'noopener,noreferrer')} />
             </div>
           </div>
         </div>
@@ -117,19 +126,28 @@ function Projects() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'space-between',
+          padding: '12px 0'
         }}>
-          <p style={{ fontSize: '36px', fontWeight: '600' }}>
-            <span style={{ color: '#C71212', fontWeight: '500' }}>co</span>DIRECT
-          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 'auto' }}>
+            <p style={{ fontSize: '36px', fontWeight: '600' }}>
+              <span style={{ color: '#C71212', fontWeight: '500' }}>co</span>DIRECT
+            </p>
 
-          <Button style={{ width: '210px', height: '36px', fontSize: '17px', marginTop: '15px' }} onClick={() => {
-            navigate('/new-project')
-          }}>
-            Create new project
-          </Button>
+            <Button style={{ width: '210px', height: '36px', fontSize: '17px', marginTop: '15px' }} onClick={() => {
+              navigate('/new-project')
+            }}>
+              Create new project
+            </Button>
+          </div>
+          
+          <p style={{ fontSize: '14px', color: '#555', marginTop: 'auto' }}>
+            beta 1.0.0
+          </p>
         </div>
       </div>
+
+      <TOSFooter />
     </div>
   )
 }

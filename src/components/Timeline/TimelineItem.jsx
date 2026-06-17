@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import './TimelineItem.css'
 
-function TimelineItem({ color, row, col, pageIndex, description, start, end, id, index, secondsScale, trackIndex, items, onStartDrag, onEndDrag, onUpdate, snapEnabled, snapInterval, selected, onSelect, project }) {
+function TimelineItem({ color, row, col, pageIndex, description, start, end, id, index, secondsScale, trackIndex, items, onStartDrag, onEndDrag, onUpdate, snapEnabled, snapInterval, selected, canEdit, onSelect, project }) {
   const itemRef = useRef(null)
   const dragMode = useRef(null)
 
@@ -12,6 +12,11 @@ function TimelineItem({ color, row, col, pageIndex, description, start, end, id,
 
   const currentStart = useRef(start)
   const currentTrack = useRef(trackIndex)
+  const canEditRef = useRef(canEdit)
+
+  React.useEffect(() => {
+    canEditRef.current = canEdit
+  }, [canEdit])
 
   const scrollContainer = useRef(null)
   const initialScrollLeft = useRef(0)
@@ -40,6 +45,8 @@ function TimelineItem({ color, row, col, pageIndex, description, start, end, id,
   };
 
   const handleMouseDown = (e, mode) => {
+    if (!canEditRef.current) return
+
     e.stopPropagation()
     e.preventDefault()
 
@@ -225,7 +232,7 @@ function TimelineItem({ color, row, col, pageIndex, description, start, end, id,
       }
 
       const snappedDeltaX = (currentStart.current - initialStart.current) * secondsScale
-      const deltaY = (currentTrack.current - trackIndex) * 64
+      const deltaY = (currentTrack.current - trackIndex) * 55
 
       itemRef.current.style.transform = `translate3d(${snappedDeltaX}px, ${deltaY}px, 0)`
     }
@@ -278,14 +285,26 @@ function TimelineItem({ color, row, col, pageIndex, description, start, end, id,
     }
   }
 
+  const enterDescription = () => {
+    const newDescription = window.prompt("Edit description:", description);
+    if (newDescription !== null) {
+      onUpdate(index, { description: newDescription });
+    }
+  }
+
   return (
     <div
       ref={itemRef}
-      className={`timeline-item ${selected ? 'selected' : ''}`}
+      className={`timeline-item ${selected ? 'selected' : ''} ${canEditRef.current ? '' : 'no-edit'}`}
       onMouseDown={(e) => handleMouseDown(e, 'move')}
       onClick={(e) => {
         e.stopPropagation()
         onSelect(id)
+      }}
+      onDoubleClick={(e) => {
+        e.stopPropagation * (
+          enterDescription()
+        )
       }}
       style={{
         backgroundColor: color,
@@ -293,10 +312,10 @@ function TimelineItem({ color, row, col, pageIndex, description, start, end, id,
         width: `${(end - start) * secondsScale}px`
       }}
     >
-      <div className="resize-handle handle-left" onMouseDown={(e) => handleMouseDown(e, 'left')} />
+      <div className={`resize-handle handle-left ${canEditRef.current ? '' : 'no-edit'}`} onMouseDown={(e) => handleMouseDown(e, 'left')} />
       <p className="timeline-item-name">{getTitleForControl(pageIndex, col, row)}</p>
       <p className="timeline-item-description">{description}</p>
-      <div className="resize-handle handle-right" onMouseDown={(e) => handleMouseDown(e, 'right')} />
+      <div className={`resize-handle handle-right ${canEditRef.current ? '' : 'no-edit'}`} onMouseDown={(e) => handleMouseDown(e, 'right')} />
     </div>
   )
 }

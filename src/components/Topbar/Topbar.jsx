@@ -16,16 +16,16 @@ export default function Topbar({
   project,
   companionStatus,
   selectedSequenceIndex,
+  isPlaying,
+  currentMode,
 }) {
   const navigate = useNavigate()
 
-  const statusTone = companionStatus === 'OK'
+  const statusTone = companionStatus === 'Connected'
     ? 'ok'
-    : companionStatus === 'Offline' || companionStatus === 'Failed to connect'
+    : companionStatus === 'Bad IP Address' || companionStatus === 'Bad Config'
       ? 'error'
-      : companionStatus === 'Checking...'
-        ? 'checking'
-        : ''
+      : 'checking'
 
   const handleLogoClick = () => {
     navigate('/projects')
@@ -54,14 +54,14 @@ export default function Topbar({
             selectedIndex={selectedSequenceIndex}
             onClick={onOpenSequenceManager}
           />
-          <PillButton onClick={onCreateSequence}>
+          <PillButton onClick={onCreateSequence} disabled={isPlaying || currentMode === 'Live'}>
             <PlusIcon size={19} style={{ transform: 'translateY(-1px)' }} />
           </PillButton>
         </div>
-        <PillSelector
+        {/* <PillSelector
           options={['Edit', 'Live']}
           onChange={onModeChange}
-        />
+        /> */}
       </div>
 
       <div className='section'>

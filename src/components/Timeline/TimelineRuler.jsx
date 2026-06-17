@@ -11,8 +11,7 @@ function TimelineRuler({
   onSnapIntervalChange,
   onClick
 }) {
-  const totalWidth = (totalDuration + 1) * secondsScale;
-  
+  const totalWidth = (totalDuration + 1) * secondsScale
   const startTick = Math.max(0, Math.floor(visibleStart) - 2)
   const endTick = Math.min(totalDuration, Math.ceil(visibleEnd) + 2)
 
@@ -26,7 +25,6 @@ function TimelineRuler({
       className="timeline-ruler"
       style={{
         width: `${totalWidth}px`,
-        minWidth: `${totalWidth}px`, // Force the ruler to match total project width
         position: 'relative'
       }}
       onClick={onClick}
