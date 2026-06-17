@@ -65,7 +65,7 @@ export default function App() {
     setTimeout(() => {
       console.log("Attempting to connect to WebSocket...");
 
-      const ws = new WebSocket('ws://localhost:8081');
+      const ws = new WebSocket('wss://repacking-excusably-cardinal.ngrok-free.dev');
 
       wsRef.current = ws;
 
