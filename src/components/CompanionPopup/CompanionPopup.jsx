@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../Button/Button'
 import HorizontalSeparator from '../HorizontalSeparator'
 import './CompanionPopup.css'
@@ -6,7 +6,7 @@ import Expand from '../Expand/Expand'
 import InputField from '../InputField/InputField'
 import { updateProject } from '../../utils/projectUpdater'
 import PillSelector from '../PillSelector/PillSelector'
-import { CircleQuestionMarkIcon, UploadIcon } from 'lucide-react'
+import { CircleQuestionMarkIcon, CopyIcon, CheckIcon, UploadIcon } from 'lucide-react'
 
 const readProjectsFromStorage = () => {
   const rawProjects = localStorage.getItem('projects')
@@ -40,6 +40,7 @@ function CompanionPopup({ project, onClose, isOverlay = false, statusText = 'Con
   const originalConnectionRef = React.useRef('')
 
   const [fetchMode, setFetchMode] = React.useState(0)
+  const [isCopied, setIsCopied] = useState(false)
 
   React.useEffect(() => {
     if (project) {
@@ -151,6 +152,19 @@ function CompanionPopup({ project, onClose, isOverlay = false, statusText = 'Con
     input.click();
   };
 
+  const handleCopyRoomId = () => {
+    if (project?.websocketRoomId) {
+      navigator.clipboard.writeText(project.websocketRoomId)
+        .then(() => {
+          setIsCopied(true)
+          setTimeout(() => setIsCopied(false), 2000)
+        })
+        .catch((err) => {
+          console.error('Failed to copy text: ', err);
+        });
+    }
+  }
+
   useEffect(() => {
     const fetchMode = project?.companion?.fetchMode;
     setFetchMode(fetchMode);
@@ -187,20 +201,26 @@ function CompanionPopup({ project, onClose, isOverlay = false, statusText = 'Con
         <HorizontalSeparator style={{ margin: '10px 0' }} />
 
         <Expand title='Companion Connection'>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center', margin: '6px 0 12px 0' }}>
             <InputField placeholder='IP Address' value={companionIp ? companionIp : ''} onChange={(e) => handleIpUpdate(e.target.value)} />
-            <p style={{ color: '#9c9c9c' }}>:</p>
+            <p style={{ color: '#9c9c9c', margin: 0 }}>:</p>
             <InputField placeholder='Port' value={companionPort ? companionPort : ''} onChange={(e) => handlePortUpdate(e.target.value)} />
           </div>
         </Expand>
 
         <Expand title='Companion Config' style={{ marginTop: '10px' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center', paddingBottom: '10px', marginTop: '5px' }}>
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            gap: '12px', 
+            alignItems: 'center', 
+            margin: '6px 0 12px 0'
+          }}>
             <PillSelector options={['Auto', 'Manual']} initialSelectedIndex={fetchMode} onChange={handleChangeFetchMode} />
             {fetchMode === 1 && (
               <Button onClick={handleUploadConfig}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {"Upload Config"}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0 2px' }}>
+                  <span>Upload Config</span>
                   <UploadIcon size={16} />
                 </div>
               </Button>
@@ -210,9 +230,35 @@ function CompanionPopup({ project, onClose, isOverlay = false, statusText = 'Con
 
         <HorizontalSeparator style={{ margin: '10px 0' }} />
 
-        <Expand title='WebSockets'>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
-            <p style={{ userSelect: 'text', cursor: 'text' }}>{project.websocketRoomId}</p>
+        <Expand title='WebSocket'>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center', margin: '6px 0 12px 0' }}>
+            <div style={{ 
+              backgroundColor: '#2e2e2e', 
+              padding: '0 12px', 
+              borderRadius: '8px',
+              flexGrow: 1,
+              display: 'flex',
+              alignItems: 'center',
+              height: '38px',
+              boxSizing: 'border-box'
+            }}>
+              <p style={{ 
+                userSelect: 'text', 
+                cursor: 'text', 
+                margin: 0,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+                {project?.websocketRoomId}
+              </p>
+            </div>
+            <Button
+              style={{ width: '45px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+              onClick={handleCopyRoomId}
+            >
+              {isCopied ? <CheckIcon size={16} /> : <CopyIcon size={16} />}
+            </Button>
           </div>
         </Expand>
       </div>
