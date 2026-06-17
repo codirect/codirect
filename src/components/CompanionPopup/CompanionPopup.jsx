@@ -6,7 +6,7 @@ import Expand from '../Expand/Expand'
 import InputField from '../InputField/InputField'
 import { updateProject } from '../../utils/projectUpdater'
 import PillSelector from '../PillSelector/PillSelector'
-import { UploadIcon } from 'lucide-react'
+import { CircleQuestionMarkIcon, UploadIcon } from 'lucide-react'
 
 const readProjectsFromStorage = () => {
   const rawProjects = localStorage.getItem('projects')
@@ -160,6 +160,13 @@ function CompanionPopup({ project, onClose, isOverlay = false, statusText = 'Con
     <div className='panel companion-panel'>
       <div className='companion-header'>
         <p style={{ fontSize: '1.5rem', margin: 0 }}>Companion</p>
+        <a
+          href="https://docs.codirect.live/companionstatus"
+          target="_blank"
+          className="docs-helper"
+        >
+          <CircleQuestionMarkIcon size={28} />
+        </a>
       </div>
 
       <HorizontalSeparator />
@@ -192,7 +199,7 @@ function CompanionPopup({ project, onClose, isOverlay = false, statusText = 'Con
             <PillSelector options={['Auto', 'Manual']} initialSelectedIndex={fetchMode} onChange={handleChangeFetchMode} />
             {fetchMode === 1 && (
               <Button onClick={handleUploadConfig}>
-                <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {"Upload Config"}
                   <UploadIcon size={16} />
                 </div>
@@ -200,13 +207,13 @@ function CompanionPopup({ project, onClose, isOverlay = false, statusText = 'Con
             )}
           </div>
         </Expand>
-        
+
         <HorizontalSeparator style={{ margin: '10px 0' }} />
 
         <Expand title='WebSockets'>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
-              <p style={{userSelect: 'text', cursor: 'text'}}>{project.websocketRoomId}</p>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
+            <p style={{ userSelect: 'text', cursor: 'text' }}>{project.websocketRoomId}</p>
+          </div>
         </Expand>
       </div>
 

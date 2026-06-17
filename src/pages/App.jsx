@@ -16,7 +16,7 @@ import BetaBanner from '../components/BetaBanner/BetaBanner'
 export default function App() {
   const [project, setProject] = useState(null)
   const location = useLocation()
-  const navigate = useNavigate() // <-- For programmatically shifting routing params
+  const navigate = useNavigate()
 
   const [isPlaying, setIsPlaying] = useState(false)
   const [isResetPlayback, setIsResetPlayback] = useState(false)

@@ -317,16 +317,39 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
 
   const handleDrop = (event, trackIndex) => {
     if (isPlayingRef.current || !canEditRef.current) return;
-    event.preventDefault()
-    const rect = event.currentTarget.getBoundingClientRect()
-    const pixelX = event.clientX - rect.left - ((1 * secondsScale) / 2)
-    const exactSeconds = Math.max(0, pixelX / secondsScale)
-    const finalSeconds = getValidPosition(snapEnabled ? snap(exactSeconds) : exactSeconds, trackIndex, null)
-    if (finalSeconds === null) return
-    const data = JSON.parse(event.dataTransfer.getData('application/json'))
-    const newItem = { id: `item-${Date.now()}-${Math.random()}`, color: data.color, row: data.row, col: data.col, pageIndex: data.pageIndex, description: "description...", start: finalSeconds, end: finalSeconds + 1, track: trackIndex };
-    const newItems = [...items, newItem]; setItems(newItems); handleUpdate(newItems);
-  }
+    event.preventDefault();
+
+    const previewEl = event.currentTarget.querySelector('.timeline-item-preview');
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const pixelX = event.clientX - rect.left - ((1 * secondsScale) / 2);
+    const exactSeconds = Math.max(0, pixelX / secondsScale);
+    const finalSeconds = getValidPosition(snapEnabled ? snap(exactSeconds) : exactSeconds, trackIndex, null);
+
+    if (finalSeconds === null) {
+      if (previewEl) previewEl.style.display = 'none';
+      return;
+    }
+
+    if (previewEl) previewEl.style.display = 'none';
+
+    const data = JSON.parse(event.dataTransfer.getData('application/json'));
+    const newItem = {
+      id: `item-${Date.now()}-${Math.random()}`,
+      color: data.color,
+      row: data.row,
+      col: data.col,
+      pageIndex: data.pageIndex,
+      description: "description...",
+      start: finalSeconds,
+      end: finalSeconds + 1,
+      track: trackIndex
+    };
+
+    const newItems = [...items, newItem];
+    setItems(newItems);
+    handleUpdate(newItems);
+  };
 
   const handleSelectItem = (id) => { if (isPlayingRef.current || !canEditRef.current) return; setSelectedItemId(id || null) }
   const handleUpdate = (updatedItems) => {

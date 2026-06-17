@@ -33,3 +33,12 @@ body {
   box-shadow: 0 0px 6px #333333;
   border: 1px solid #333333;
 }
+
+.docs-helper {
+  color: #888888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.docs-helper:hover {
+  color: #fff;
+}

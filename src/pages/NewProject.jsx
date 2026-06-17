@@ -4,7 +4,7 @@ import HorizontalSeparator from '../components/HorizontalSeparator'
 import InputField from '../components/InputField/InputField'
 import Button from '../components/Button/Button'
 import { useNavigate } from 'react-router-dom'
-import TOS from '../components/TOS/TOS'
+import TOSFooter from '../components/TOSFooter/TOSFooter'
 
 function NewProject() {
   const [projectName, setProjectName] = React.useState('')
@@ -77,7 +77,6 @@ function NewProject() {
       <div className='panel'>
         <div style={{ justifyContent: 'space-between', display: 'flex', alignItems: 'center', gap: '100px', padding: '20px' }}>
           <p style={{ fontSize: '32px' }}>Create new <span style={{ color: '#C71212' }}>project</span></p>
-          <CircleQuestionMarkIcon size={28} color='#888888' />
         </div>
 
         <HorizontalSeparator />
@@ -108,7 +107,7 @@ function NewProject() {
         </div>
       </div>
       
-      <TOS />
+      <TOSFooter />
     </div>
   )
 }

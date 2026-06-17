@@ -1,0 +1,44 @@
+.policy-container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.7;
+  color: #333;
+}
+
+.policy-container h1 {
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 12px;
+}
+
+.policy-container p {
+  margin-bottom: 20px;
+  font-size: 1.05rem;
+}
+
+.policy-container button {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.policy-container button:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.policy-container button:active {
+  transform: translateY(1px);
+}

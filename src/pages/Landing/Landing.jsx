@@ -54,7 +54,7 @@ function Landing() {
           <button className='nav-button' onClick={() => { scrollToSection('home'); setMenuOpen(false) }}>Home</button>
           <button className='nav-button' onClick={() => { scrollToSection('features'); setMenuOpen(false) }}>Features</button>
           <button className='nav-button' onClick={() => { scrollToSection('contact'); setMenuOpen(false) }}>Contact</button>
-          <button className='nav-button' onClick={() => { scrollToSection('contact'); setMenuOpen(false) }}>Docs <GoArrowUpRight /></button>
+          <a href='https://docs.codirect.live' target='_blank' className='nav-button'>Docs <GoArrowUpRight /></a>
         </div>
       </div>
 
@@ -88,7 +88,7 @@ function Landing() {
           <div className='card'>
             <p className='title'>Open-Source</p>
             <div className='icons'>
-              <div className='icon-container secondary' onClick={() => window.open('https://github.com/k-preslav/codirect', '_blank', 'noopener,noreferrer')}>
+              <div className='icon-container secondary' onClick={() => window.open('https://github.com/codirect/codirect', '_blank', 'noopener,noreferrer')}>
                 <FaGithub size={22} />
               </div>
               <div className='icon-container'>
@@ -100,7 +100,7 @@ function Landing() {
           <div className='card'>
             <p className='title'>Community driven</p>
             <div className='icons'>
-              <div className='icon-container secondary'>
+              <div className='icon-container secondary' onClick={() => window.open('https://discord.gg/TVh2bbYx', '_blank', 'noopener,noreferrer')}>
                 <FaDiscord size={22} />
               </div>
               <div className='icon-container'>
@@ -196,18 +196,30 @@ function Landing() {
           <div className='card'>
             <p className='title'>contact@codirect.live</p>
             <div className='icons'>
-              <div className='icon-container' style={{ color: 'white' }}>
+              <a
+                href='mailto:contact@codirect.live'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='icon-container'
+                style={{ color: 'white', cursor: 'pointer', display: 'inline-flex' }}
+              >
                 <MailIcon size={26} />
-              </div>
+              </a>
             </div>
           </div>
 
           <div className='card'>
             <p className='title'>Discord Channel</p>
             <div className='icons'>
-              <div className='icon-container' style={{ color: 'white' }}>
+              <a
+                href='https://discord.gg/TVh2bbYx'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='icon-container'
+                style={{ color: 'white', cursor: 'pointer', display: 'inline-flex' }}
+              >
                 <FaDiscord size={26} />
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -216,7 +228,7 @@ function Landing() {
       <footer>
         <p className='license'>Licensed under the MIT License</p>
       </footer>
-    </div>
+    </div >
   )
 }
 

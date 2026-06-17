@@ -232,7 +232,7 @@ function TimelineItem({ color, row, col, pageIndex, description, start, end, id,
       }
 
       const snappedDeltaX = (currentStart.current - initialStart.current) * secondsScale
-      const deltaY = (currentTrack.current - trackIndex) * 64
+      const deltaY = (currentTrack.current - trackIndex) * 55
 
       itemRef.current.style.transform = `translate3d(${snappedDeltaX}px, ${deltaY}px, 0)`
     }

@@ -24,7 +24,7 @@ function BetaBanner() {
         <p className='feedback-prompt'>
           Experiencing issues?{' '}
           <a 
-            href="https://forms.google.com/your-form-id-here" 
+            href="https://forms.gle/RKJkqzs1DN6uhFHZ8" 
             target="_blank" 
             rel="noopener noreferrer"
             className="feedback-link"
