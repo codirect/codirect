@@ -13,31 +13,51 @@
 
 Welcome to the [coDIRECT](https://codirect.live) GitHub repository, a powerful timeline automation engine designed for seamless integration with [Bitfocus Companion](https://bitfocus.io/companion).
 
-coDIRECT is an advanced, open-source solution that empowers technical directors and broadcast engineers to synchronize, schedule, and orchestrate complex production workflows using precise, time-coded triggers. With its flexible architecture, coDIRECT scales efficiently from small local streams to enterprise broadcast environments, making it an ideal choice for a wide range of applications.
+coDIRECT is an advanced, open-source solution that empowers technical directors and broadcast engineers to synchronize, schedule, and orchestrate complex production workflows using precise, time-coded triggers. Whether you are automating multi-camera switching for a live broadcast or triggering complex lighting cues, coDIRECT scales efficiently to give you professional-grade control in a browser-based interface.
+
+<br/>
+
+<p align="center">
+  <img src="public/codirectShowcaseImage.png" alt="coDIRECT Showcase" width="800">
+</p>
 
 <br/>
 
 ## 🚀 Key Features
 
+*   **Zero-Friction Start:** No accounts, no sign-ups, and no tracking. Get started in under 30 seconds.
 *   **Companion Integration:** Seamless integration with Bitfocus Companion for streamlined workflow management.
 *   **Precision Automation:** Precise, time-coded triggers for accurate, reliable automation.
-*   **Scalable Architecture:** Flexible and scalable design for adaptability in environments of any size.
+*   **Scalable Architecture:** Flexible design for adaptability in environments of any size.
 *   **Open Source:** Built for the community, ensuring accessibility and collaborative growth.
+
+<br/>
+
+## ⚙️ How It Works
+
+coDIRECT acts as the "brain" of your production timeline, sending commands to your existing infrastructure:
+
+`[coDIRECT Timeline]` -> `[HTTP Triggers]` -> `[Bitfocus Companion]` -> `[Production Actions]`
 
 <br/>
 
 ## 🛠 Getting Started
 
 To begin using coDIRECT, just open it in your browser:
-https://codirect.com
+[https://codirect.live](https://codirect.live)
 
-For comprehensive documentation and support resources, visit the [coDIRECT documentation](https://docs.codirect.live) page. Here, you'll find detailed guides on how to use coDIRECT.
+For comprehensive documentation and support resources, visit the [coDIRECT documentation](https://docs.codirect.live) page. 
+
+**Ready to automate your production?** [Launch coDIRECT](https://codirect.live) and set up your first cue in under a minute.
 
 <br/>
 
 ## 🤝 Contributing
 
-coDIRECT is an open-source project, and we welcome contributions from the community! Whether you're a developer, technical director, or broadcast engineer, your input and expertise can help shape the future of coDIRECT.
+coDIRECT is an open-source project, and we welcome contributions from the community! Whether you're a developer, technical director, or broadcast engineer, your input helps shape the future of coDIRECT.
+
+### Request a feature
+If you are not a developer, feel welcome to request a feature [in this form](https://forms.gle/Q7C9LaFZWp8djxTG8)
 
 ### How to Contribute
 1.  **Fork the Repository:** Click the "Fork" button in the top right corner.
@@ -50,17 +70,13 @@ coDIRECT is an open-source project, and we welcome contributions from the commun
 ### 🔨 How to build
 After forking the repository, inside the root folder run these commands:
 
-```
+```bash
 npm install
 npm run dev
 ```
-You will need [NodeJS](https://nodejs.org/en) installed on your system.
+You will need NodeJS installed on your system.
 
-<br/>
-
-Join our community on [Discord](https://discord.com/invite/TVh2bbYx) to discuss ideas, share knowledge, and collaborate on the development of coDIRECT. 
-
-<br/>
+Join our community on [Discord](https://discord.com/invite/TVh2bbYx) to discuss ideas, share knowledge, and collaborate on the development of coDIRECT.
 
 ## 📜 License
 This project is licensed under the [MIT License](LICENSE).
