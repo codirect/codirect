@@ -57,7 +57,7 @@ For comprehensive documentation and support resources, visit the [coDIRECT docum
 coDIRECT is an open-source project, and we welcome contributions from the community! Whether you're a developer, technical director, or broadcast engineer, your input helps shape the future of coDIRECT.
 
 ### Request a feature
-If you are not a developer, feel welcome to request a feature [in this form](https://forms.gle/Q7C9LaFZWp8djxTG8)
+If you are not a developer, feel welcome to request a feature [in this form](https://tally.so/r/rjgEeR)
 
 ### How to Contribute
 1.  **Fork the Repository:** Click the "Fork" button in the top right corner.
