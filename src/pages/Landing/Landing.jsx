@@ -77,7 +77,7 @@ function Landing() {
 
         <div className='cards-container'>
           <div className='card'>
-            <p className='title'>Free to use</p>
+            <p className='title'>No Account Needed</p>
             <div className='icons'>
               <div className='icon-container'>
                 <CheckCheckIcon size={26} />
@@ -86,7 +86,7 @@ function Landing() {
           </div>
 
           <div className='card'>
-            <p className='title'>Open-Source</p>
+            <p className='title'>Free and Open-Source</p>
             <div className='icons'>
               <div className='icon-container secondary' onClick={() => window.open('https://github.com/codirect/codirect', '_blank', 'noopener,noreferrer')}>
                 <FaGithub size={22} />
