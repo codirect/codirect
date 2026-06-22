@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Announcement.css';
 
-const ANNOUNCEMENT_URL = 'https://api.npoint.io/f1cc1e27b71d9877471c'; 
+const ANNOUNCEMENT_URL = 'https://codirect.github.io/codirect-announcement/announcement.json'
 
 function Announcement() {
   const [announcement, setAnnouncement] = useState(null);
@@ -9,9 +9,15 @@ function Announcement() {
 
   useEffect(() => {
     const fetchAnnouncement = async () => {
-      try {        
+      try {
         // Fetch the announcement from the URL
-        const response = await fetch(ANNOUNCEMENT_URL);
+        const response = await fetch(ANNOUNCEMENT_URL, {cache: 'no-cache'});
+
+        // Safely handle rate limits or server errors before parsing
+        if (!response.ok) {
+          throw new Error(`Server responded with ${response.status}`);
+        }
+
         const data = await response.json();
 
         if (data && data.date) {
