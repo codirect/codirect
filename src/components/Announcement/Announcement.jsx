@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Announcement.css';
 
-const ANNOUNCEMENT_URL = 'https://api.npoint.io/307c9fbb60951f707570'; 
+const ANNOUNCEMENT_URL = 'https://api.npoint.io/f1cc1e27b71d9877471c'; 
 
 function Announcement() {
   const [announcement, setAnnouncement] = useState(null);
