@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from 'react-router-dom' // <-- Added useNavi
 import TimelinePanel from '../components/Timeline/TimelinePanel'
 import PlayControls from '../components/PlayControls/PlayControls'
 import BetaBanner from '../components/BetaBanner/BetaBanner'
+import Announcement from '../components/Announcement/Announcement'
 
 export default function App() {
   const [project, setProject] = useState(null)
@@ -288,6 +289,8 @@ export default function App() {
           statusTone={companionInfo.tone}
         />
       )}
+
+      <Announcement />
     </div>
   )
 }
