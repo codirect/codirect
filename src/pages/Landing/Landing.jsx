@@ -181,7 +181,7 @@ function Landing() {
 
         <div className='action-buttons'>
           <button className='primary-button' onClick={handleGetStarted}>{hasGotStarted ? 'My Projects' : 'Get Started'} <ArrowRightIcon size={21} strokeWidth={2.4} /></button>
-          <a className='secondary-button' onClick={() => window.open('https://vimeo.com/1202643763', '_blank')}>Watch showcase</a>
+          <a className='secondary-button' onClick={() => window.open('https://vimeo.com/1203856552', '_blank')}>Watch showcase</a>
         </div>
       </div>
 
