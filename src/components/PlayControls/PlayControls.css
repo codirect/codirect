@@ -1,53 +1,86 @@
 .play-controls {
-  position: absolute;
-  flex: 1;
-  height: 23%;
-  left: 60%;
-  transform: translate(-50%, 50%);
-  z-index: 10;
+  z-index: 110;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 10px;
-  transition: left 0.2s ease;
-}
-
-.play-controls.no-sidebar {
-  left: 50%;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: auto;
+  margin-bottom: 20px;
+  padding: 8px 11px;
+  background-color: #242424;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  align-self: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .play-controls .time {
-  font-size: 56px;
+  font-size: 36px;
+  font-weight: 600;
   color: #ffffff;
   font-variant-numeric: tabular-nums;
+  margin: 0 16px;
+  font-family: inherit;
+  letter-spacing: normal;
+  text-shadow: none;
 }
 
 .play-controls .button {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 11px;
+  border-radius: 6px;
   background-color: #333333;
+  border: 1px solid transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  color: #ccc;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.play-controls .button:hover:not(:disabled) {
+  background-color: #404040;
+  color: #fff;
+}
+
+.play-controls .button:active:not(:disabled) {
+  background-color: #2a2a2a;
 }
 
 .play-controls .button:disabled {
   cursor: default;
+  opacity: 0.5;
 }
 
 .play-controls .hold-button {
-  width: 126px;
-  height: 39px;
-  border-radius: 50px;
+  width: auto;
+  padding: 0 16px;
+  height: 40px;
+  border-radius: 6px;
   background-color: #333333;
+  color: #ccc;
+  border: 1px solid transparent;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.play-controls .hold-button:hover {
+  color: #fff;
 }
 
 .play-controls .hold-button.active {
-  background-color: #7c1313;
+  background-color: #e42b2b !important;
+  color: #fff !important;
+  border-color: #e42b2b !important;
+}
+.play-controls .hold-button:active {
+  background-color: #e42b2b;
 }

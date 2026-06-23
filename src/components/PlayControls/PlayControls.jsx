@@ -88,8 +88,6 @@ function PlayControls({ isPlaying, setIsPlaying, setIsResetPlayback, time = '00:
 
   return (
     <div className={`play-controls ${!isSidebarVisible ? 'no-sidebar' : ''}`}>
-      <p className="time" ref={timeRef}>{formattedTime}</p>
-
       <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', gap: '10px' }}>
         <button className="button" onClick={() => {
           setIsPlaying((current) => !current);
@@ -109,11 +107,15 @@ function PlayControls({ isPlaying, setIsPlaying, setIsResetPlayback, time = '00:
         </button>
       </div>
 
+      <p className="time" ref={timeRef}>{formattedTime}</p>
       <button
         className={`button hold-button ${isHoldingTriggers ? 'active' : ''}`}
-        disabled={!isPlaying}
-        onMouseDown={() => setHold(true)}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          setHold(true);
+        }}
         onMouseUp={() => setHold(false)}
+        onMouseLeave={() => setHold(false)}
       >
         Hold Triggers
       </button>

@@ -7,12 +7,12 @@ import { triggerCompanionButton } from '../../utils/fireCompanionEvents'
 import { createPlaybackEngine } from '../../utils/playbackEngine'
 import AudioReferenceLabel from './AudioReference/AudioReferenceLabel'
 import AudioReferenceItem from './AudioReference/AudioReferenceItem'
-import { saveAudio, getAudio, deleteAudio } from '../../utils/audioDB'
+import { saveMedia, getMedia, deleteMedia } from '../../utils/mediaDB'
 import { MagnetIcon, Trash2Icon, TrashIcon } from 'lucide-react'
 
 const TOTAL_DURATION = 300
 
-function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPlaying, setIsPlaying, isResetPlayback, setPlaybackTime, isHoldingTriggers, canEdit }) {
+function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPlaying, setIsPlaying, isResetPlayback, setPlaybackTime, isHoldingTriggers, canEdit, mediaAudioData }) {
   const [items, setItems] = useState([])
   const [secondsScale, setSecondsScale] = useState(100)
   const draggingItemRef = useRef(null)
@@ -369,21 +369,29 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
       .filter(item => item.end >= startLimit && item.start <= endLimit)
   }, [items, visibleStart, visibleEnd])
 
-  // --- Audio reference: persistence load ---
+  // --- Audio reference: persistence load from unified mediaDB ---
   useEffect(() => {
     const seq = project?.sequences?.[selectedSequenceIndex];
-    if (seq?.audioRefId) {
+    const mediaId = seq?.mediaRefId;
+    if (mediaId) {
       setIsAudioLoading(true);
-      getAudio(seq.audioRefId).then((data) => {
-        if (data) {
+      getMedia(mediaId).then((data) => {
+        if (data && data.waveform && data.waveform.length > 0) {
           if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
-          const blob = new Blob([data.arrayBuffer], { type: 'audio/mpeg' });
-          const url = URL.createObjectURL(blob);
-          audioUrlRef.current = url;
+
+          // Create audio blob from the stored audioBuffer or the video blob itself
+          let audioUrl;
+          if (data.audioBuffer) {
+            const blob = new Blob([data.audioBuffer], { type: 'audio/mpeg' });
+            audioUrl = URL.createObjectURL(blob);
+          } else {
+            audioUrl = URL.createObjectURL(data.blob);
+          }
+          audioUrlRef.current = audioUrl;
 
           if (!audioElementRef.current) audioElementRef.current = new Audio();
           audioElementRef.current.pause();
-          audioElementRef.current.src = url;
+          audioElementRef.current.src = audioUrl;
           audioElementRef.current.currentTime = 0;
           audioElementRef.current.volume = Math.pow(audioVolume, 2);
 
@@ -393,10 +401,20 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
             fileName: data.fileName,
           });
           setAudioRefIsPlaying(false);
+        } else {
+          // Media exists but has no audio data
+          if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+          audioUrlRef.current = null;
+          if (audioElementRef.current) {
+            audioElementRef.current.pause();
+            audioElementRef.current.src = '';
+          }
+          setAudioReferenceData(null);
+          setAudioRefIsPlaying(false);
         }
       }).catch(console.error).finally(() => setIsAudioLoading(false));
     } else {
-      // Clear if sequence has no audio
+      // Clear if sequence has no media
       if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
       audioUrlRef.current = null;
       if (audioElementRef.current) {
@@ -406,11 +424,117 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
       setAudioReferenceData(null);
       setAudioRefIsPlaying(false);
     }
-  }, [project?.sequences?.[selectedSequenceIndex]?.audioRefId]);
+  }, [project?.sequences?.[selectedSequenceIndex]?.mediaRefId]);
 
-  // --- Audio reference: file load ---
+  // --- Optimistic audio update from VideoReference via onMediaUpdate ---
+  useEffect(() => {
+    if (mediaAudioData === undefined) return; // prop not set yet
+    if (mediaAudioData === null) {
+      // Media was removed
+      if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+      if (audioElementRef.current) {
+        audioElementRef.current.pause();
+        audioElementRef.current.src = '';
+      }
+      setAudioReferenceData(null);
+      setAudioRefIsPlaying(false);
+      return;
+    }
+    // Optimistic update with extracted audio data
+    if (mediaAudioData.audioBuffer) {
+      if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+      const blob = new Blob([mediaAudioData.audioBuffer], { type: 'audio/mpeg' });
+      const url = URL.createObjectURL(blob);
+      audioUrlRef.current = url;
+
+      if (!audioElementRef.current) audioElementRef.current = new Audio();
+      audioElementRef.current.pause();
+      audioElementRef.current.src = url;
+      audioElementRef.current.currentTime = 0;
+      audioElementRef.current.volume = Math.pow(audioVolume, 2);
+    }
+    setAudioReferenceData({
+      waveform: mediaAudioData.waveform,
+      duration: mediaAudioData.duration,
+      fileName: mediaAudioData.fileName,
+    });
+    setAudioRefIsPlaying(false);
+  }, [mediaAudioData]);
+
+  // --- Standalone audio upload (from timeline label) ---
+  const processAndSaveAudioFile = async (file) => {
+    try {
+      setIsAudioLoading(true);
+
+      if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+      const objectUrl = URL.createObjectURL(file);
+      audioUrlRef.current = objectUrl;
+
+      const arrayBuffer = await file.arrayBuffer();
+      const arrayBufferCopy = arrayBuffer.slice(0);
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+      const samples = 12000;
+      const channelData = audioBuffer.getChannelData(0);
+      const blockSize = Math.floor(channelData.length / samples);
+      const waveform = [];
+
+      for (let i = 0; i < samples; i++) {
+        let min = 1.0;
+        let max = -1.0;
+        for (let j = 0; j < blockSize; j++) {
+          const datum = channelData[i * blockSize + j];
+          if (datum < min) min = datum;
+          if (datum > max) max = datum;
+        }
+        waveform.push({ min, max });
+      }
+
+      audioContext.close();
+
+      if (!audioElementRef.current) audioElementRef.current = new Audio();
+      audioElementRef.current.pause();
+      audioElementRef.current.src = objectUrl;
+      audioElementRef.current.currentTime = 0;
+      audioElementRef.current.volume = Math.pow(audioVolume, 2);
+
+      const mediaId = `media_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      await saveMedia(mediaId, {
+        blob: file,
+        type: 'audio',
+        fileName: file.name,
+        duration: audioBuffer.duration,
+        waveform,
+        audioBuffer: arrayBufferCopy,
+      });
+
+      updateProject(project.name, (p) => {
+        const updated = { ...p };
+        if (updated.sequences?.[selectedSequenceIndex]) {
+          updated.sequences[selectedSequenceIndex].mediaRefId = mediaId;
+          delete updated.sequences[selectedSequenceIndex].audioRefId;
+          delete updated.sequences[selectedSequenceIndex].videoRefId;
+        }
+        return updated;
+      });
+
+      setAudioReferenceData({
+        waveform,
+        duration: audioBuffer.duration,
+        fileName: file.name,
+      });
+      setAudioRefIsPlaying(false);
+    } catch (err) {
+      console.error('Audio processing failed:', err);
+      alert('Failed to process audio file.');
+    } finally {
+      setIsAudioLoading(false);
+    }
+  };
+
   const handleSetReferenceAudioFile = useCallback(async (clearSignal) => {
-    // If called with null it means "remove audio"
     if (clearSignal === null) {
       if (audioUrlRef.current) {
         URL.revokeObjectURL(audioUrlRef.current);
@@ -424,12 +548,14 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
       setAudioRefIsPlaying(false);
 
       const seq = project?.sequences?.[selectedSequenceIndex];
-      if (seq?.audioRefId) {
-        await deleteAudio(seq.audioRefId);
+      if (seq?.mediaRefId) {
+        await deleteMedia(seq.mediaRefId);
         updateProject(project.name, (p) => {
           const updated = { ...p };
           if (updated.sequences?.[selectedSequenceIndex]) {
+            delete updated.sequences[selectedSequenceIndex].mediaRefId;
             delete updated.sequences[selectedSequenceIndex].audioRefId;
+            delete updated.sequences[selectedSequenceIndex].videoRefId;
           }
           return updated;
         });
@@ -444,78 +570,10 @@ function TimelinePanel({ project, selectedSequenceIndex, isSidebarVisible, isPla
     input.onchange = async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-
-      try {
-        setIsAudioLoading(true);
-
-        // Create object URL for the <audio> element (no re-encoding)
-        if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
-        const objectUrl = URL.createObjectURL(file);
-        audioUrlRef.current = objectUrl;
-
-        // Decode for waveform extraction
-        const arrayBuffer = await file.arrayBuffer();
-        const arrayBufferCopy = arrayBuffer.slice(0); // clone it before decodeAudioData detaches it
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-        const samples = 12000;
-        const channelData = audioBuffer.getChannelData(0);
-        const blockSize = Math.floor(channelData.length / samples);
-        const waveform = [];
-
-        for (let i = 0; i < samples; i++) {
-          let min = 1.0;
-          let max = -1.0;
-          for (let j = 0; j < blockSize; j++) {
-            const datum = channelData[i * blockSize + j];
-            if (datum < min) min = datum;
-            if (datum > max) max = datum;
-          }
-          waveform.push({ min, max });
-        }
-
-        audioContext.close();
-
-        // Wire up the audio element
-        if (!audioElementRef.current) {
-          audioElementRef.current = new Audio();
-        }
-        audioElementRef.current.pause();
-        audioElementRef.current.src = objectUrl;
-        audioElementRef.current.currentTime = 0;
-        audioElementRef.current.volume = Math.pow(audioVolume, 2);
-
-        // Save to IndexedDB (using the copy that wasn't detached)
-        const audioId = `audio_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        await saveAudio(audioId, arrayBufferCopy, audioBuffer.duration, waveform, file.name);
-
-        // Update project sequence to hold reference
-        updateProject(project.name, (p) => {
-          const updated = { ...p };
-          if (updated.sequences?.[selectedSequenceIndex]) {
-            updated.sequences[selectedSequenceIndex].audioRefId = audioId;
-          }
-          return updated;
-        });
-
-        // No need to set state here because updating the project will trigger the useEffect above to load it!
-        // But we can do it optimistically for immediate feedback:
-        setAudioReferenceData({
-          waveform,
-          duration: audioBuffer.duration,
-          fileName: file.name,
-        });
-        setAudioRefIsPlaying(false);
-      } catch (err) {
-        console.error("Audio processing failed:", err);
-        alert("Failed to process audio file.");
-      } finally {
-        setIsAudioLoading(false);
-      }
+      await processAndSaveAudioFile(file);
     };
     input.click();
-  }, [project, selectedSequenceIndex]);
+  }, [project, selectedSequenceIndex, audioVolume]);
 
   // --- Audio reference: play/pause (standalone, not tied to main play) ---
   const handleAudioRefPlayPause = useCallback(() => {
