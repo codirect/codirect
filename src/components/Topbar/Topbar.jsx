@@ -1,11 +1,12 @@
 import React from 'react'
-import { PlusIcon } from 'lucide-react'
+import { BookMarkedIcon, BookmarkIcon, PlusIcon } from 'lucide-react'
 import ItemNavigator from '../ItemNavigator/ItemNavigator'
 import PillButton from '../PillButton/PillButton'
 import PillSelector from '../PillSelector/PillSelector'
 import StatusPill from '../StatusPill/StatusPill'
 import './Topbar.css'
 import { useNavigate } from 'react-router-dom'
+import Button from '../Button/Button'
 
 export default function Topbar({
   onModeChange,
@@ -65,6 +66,7 @@ export default function Topbar({
       </div>
 
       <div className='section'>
+        <BookMarkedIcon size={18} style={{ cursor: 'pointer', transform: 'translateY(1px)', color: '#ffffffd3' }} onClick={() => window.open('https://docs.codirect.live', '_blank', 'noopener,noreferrer')} />
         <StatusPill status={statusTone} onClick={handleCompanionClick}>
           Companion
         </StatusPill>

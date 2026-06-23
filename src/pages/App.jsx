@@ -11,6 +11,7 @@ import { promptAndCreateSequence, reorderSequences, renameSequence, removeSequen
 import { useLocation, useNavigate } from 'react-router-dom' // <-- Added useNavigate to handle project loading URLs
 import TimelinePanel from '../components/Timeline/TimelinePanel'
 import PlayControls from '../components/PlayControls/PlayControls'
+import VideoReference from '../components/VideoReference/VideoReference'
 import BetaBanner from '../components/BetaBanner/BetaBanner'
 import Announcement from '../components/Announcement/Announcement'
 
@@ -23,6 +24,7 @@ export default function App() {
   const [isResetPlayback, setIsResetPlayback] = useState(false)
   const [playbackTime, setPlaybackTime] = useState(0)
   const [isHoldingTriggers, setIsHoldingTriggers] = useState(false)
+  const [mediaAudioData, setMediaAudioData] = useState(undefined)
 
   const [selectedMode, setSelectedMode] = useState('Edit')
   const [selectedSequenceIndex, setSelectedSequenceIndex] = useState(0)
@@ -58,6 +60,10 @@ export default function App() {
       setProject(getProjectByName(stateRef.current.project.name))
     }
   }
+
+  const setHold = useCallback((val) => {
+    setIsHoldingTriggers(val);
+  }, []);
 
   // --- WebSocket ---
   const wsRef = useRef(null);
@@ -161,7 +167,7 @@ export default function App() {
         break;
       case 'SET_HOLD_TRIGGERS':
         console.log("hold")
-        setIsHoldingTriggers(prevState => !prevState);
+        setHold(prevState => !prevState);
         break;
       default:
         console.warn('Unhandled remote action identifier:', action);
@@ -192,13 +198,13 @@ export default function App() {
   const companionInfo = (() => {
     const httpStatus = project?.companion?.companionStatus
     if (!httpStatus || httpStatus === 'Checking...') return { text: 'Connecting...', tone: 'checking' }
-    if (httpStatus === 'Offline')              return { text: 'Bad IP Address',   tone: 'error'    }
-    if (httpStatus === 'Failed to connect')    return { text: 'Bad Config',       tone: 'error'    }
-    if (httpStatus === 'Unknown')              return { text: 'Not Configured',   tone: 'checking' }
+    if (httpStatus === 'Offline') return { text: 'Bad IP Address', tone: 'error' }
+    if (httpStatus === 'Failed to connect') return { text: 'Bad Config', tone: 'error' }
+    if (httpStatus === 'Unknown') return { text: 'Not Configured', tone: 'checking' }
     if (httpStatus === 'OK') {
-      if (companionStatus === 'OK')            return { text: 'Connected',        tone: 'ok'       }
-      if (companionStatus === 'Disconnected')  return { text: 'Websocket Error',  tone: 'checking' }
-      return                                          { text: 'Connecting...',    tone: 'checking' }
+      if (companionStatus === 'OK') return { text: 'Connected', tone: 'ok' }
+      if (companionStatus === 'Disconnected') return { text: 'Websocket Error', tone: 'checking' }
+      return { text: 'Connecting...', tone: 'checking' }
     }
     return { text: 'Unknown', tone: 'checking' }
   })()
@@ -223,35 +229,47 @@ export default function App() {
         currentMode={selectedMode}
       />
 
-      <BetaBanner />
-
       <div style={{ display: 'flex', alignItems: 'flex-start', height: 'calc(100vh - 50px)', width: '100%', overflow: 'hidden' }}>
         <Sidebar isVisible={showSidebar}>
           <PagePanel project={project} />
         </Sidebar>
 
-        <PlayControls
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          setIsResetPlayback={setIsResetPlayback}
-          time={playbackTime}
-          isSidebarVisible={showSidebar}
-          setHold={setIsHoldingTriggers}
-          isHoldingTriggers={isHoldingTriggers}
-          enableKeyboardShortcuts={!showCompanion && !showSequenceManager}
-        />
+        <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0 }}>
 
-        <TimelinePanel
-          project={project}
-          selectedSequenceIndex={selectedSequenceIndex}
-          isSidebarVisible={showSidebar}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          isResetPlayback={isResetPlayback}
-          setPlaybackTime={setPlaybackTime}
-          isHoldingTriggers={isHoldingTriggers}
-          canEdit={!isPlaying && selectedMode === 'Edit' && !showCompanion}
-        />
+          <VideoReference
+            project={project}
+            selectedSequenceIndex={selectedSequenceIndex}
+            isPlaying={isPlaying}
+            isResetPlayback={isResetPlayback}
+            onMediaUpdate={setMediaAudioData}
+          />
+
+          <PlayControls
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            setIsResetPlayback={setIsResetPlayback}
+            time={playbackTime}
+            isSidebarVisible={showSidebar}
+            setHold={setHold}
+            isHoldingTriggers={isHoldingTriggers}
+            enableKeyboardShortcuts={!showCompanion && !showSequenceManager}
+          />
+
+          <BetaBanner />
+
+          <TimelinePanel
+            project={project}
+            selectedSequenceIndex={selectedSequenceIndex}
+            isSidebarVisible={showSidebar}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            isResetPlayback={isResetPlayback}
+            setPlaybackTime={setPlaybackTime}
+            isHoldingTriggers={isHoldingTriggers}
+            canEdit={!isPlaying && selectedMode === 'Edit' && !showCompanion}
+            mediaAudioData={mediaAudioData}
+          />
+        </div>
       </div>
 
       {showSequenceManager && (
