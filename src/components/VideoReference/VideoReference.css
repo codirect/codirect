@@ -1,6 +1,6 @@
 .video-reference-container {
   flex: 0 0 auto;
-  width: 38%;
+  width: 60vh;
   aspect-ratio: 16 / 9;
   margin: auto;
   display: flex;
